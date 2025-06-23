@@ -60,3 +60,36 @@ mentorship-backend/
 ├── index.js # Application entry point
 ├── package.json # Project dependencies
 └── README.md # Project documentation
+
+
+## Prerequisites
+
+- Node.js (v18+ recommended)
+- npm (comes with Node.js)
+- PostgreSQL (v12+)
+
+## Installation & Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd mentorship-backend
+
+2. Install dependencies:
+npm install
+
+3. Configure your database settings in config/config.json and create a .env file in the root directory:
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+JWT_SECRET=your_secret_key
+
+4. Run migrations:
+npx sequelize-cli db:migrate
+
+5. Start the development server:
+npm run dev
