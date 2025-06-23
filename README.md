@@ -73,10 +73,11 @@ mentorship-backend/
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/DamilareDremel/mentorship-backend.git
    cd mentorship-backend
 
 2. Install dependencies:
+
 npm install
 
 3. Configure your database settings in config/config.json and create a .env file in the root directory:
@@ -84,12 +85,14 @@ npm install
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD=your_db_password
-DB_NAME=your_db_name
+DB_PASSWORD=postgres
+DB_NAME=mentorship_db
 JWT_SECRET=your_secret_key
 
 4. Run migrations:
+
 npx sequelize-cli db:migrate
 
 5. Start the development server:
+
 npm run dev
