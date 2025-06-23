@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
 const adminRoutes = require("./routes/adminRoutes");
+const availabilityRoutes = require("./routes/availabilityRoutes");
 
 require("dotenv").config();
 
@@ -20,6 +21,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/availability", availabilityRoutes);
 
 // Basic Route
 app.get("/", (req, res) => {
@@ -28,6 +30,9 @@ app.get("/", (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app; // 👈 export the app only
+
