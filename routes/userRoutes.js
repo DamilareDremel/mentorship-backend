@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('../middleware/authMiddleware');
 const { User } = require('../models');
+const { getUserById } = require("../controllers/userController");
+
 
 // GET current user's profile
 router.get('/me', verifyToken, async (req, res) => {
@@ -74,5 +76,30 @@ router.get('/mentors', verifyToken, async (req, res) => {
   }
 });
 
+/// Get mentor by ID
+router.get('/mentors/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+
+    if (user.role !== "mentor") {
+      return res.status(403).json({ message: "Access denied. Not a mentor." });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("Error fetching mentor:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get user by ID
+router.get('/:id', verifyToken, getUserById);
 
 module.exports = router;

@@ -5,7 +5,8 @@ const {
   bookSession,
   getMenteeSessions,
   getMentorSessions,
-  submitFeedback
+  submitFeedback,
+  getSessionById,  // ← you can leave this here cleanly
 } = require("../controllers/sessionController");
 
 // Book a session (mentees only)
@@ -16,6 +17,9 @@ router.get("/mentee", verifyToken, getMenteeSessions);
 
 // Get mentor's sessions
 router.get("/mentor", verifyToken, getMentorSessions);
+
+// Get session by ID
+router.get("/:id", verifyToken, getSessionById);
 
 // Submit feedback
 router.put("/:id/feedback", verifyToken, submitFeedback);
