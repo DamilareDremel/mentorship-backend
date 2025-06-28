@@ -93,3 +93,15 @@ exports.submitFeedback = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getSessionById = async (req, res) => {
+  try {
+    const session = await Session.findByPk(req.params.id);
+    if (!session) {
+      return res.status(404).json({ message: "Session not found." });
+    }
+    res.status(200).json(session);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
