@@ -1,4 +1,5 @@
-const { User, Request, Session } = require("../models");
+const { User, Request, Session, Sequelize } = require("../models");
+const { Op } = require("sequelize");
 
 // Get all users
 exports.getAllUsers = async (req, res) => {
@@ -64,14 +65,21 @@ exports.assignMentor = async (req, res) => {
       return res.status(400).json({ message: "Selected user is not a mentor." });
     }
 
-    // Check if a request already exists between them
+    // Check for active (PENDING or ACCEPTED) request
     const existing = await Request.findOne({
-      where: { menteeId, mentorId }
-    });
-
-    if (existing) {
-      return res.status(400).json({ message: "A mentorship request already exists between these users." });
+  where: {
+    menteeId,
+    mentorId,
+    status: {
+      [Op.in]: ["PENDING", "ACCEPTED"]
     }
+  }
+});
+
+if (existing) {
+  return res.status(400).json({ message: "An active mentorship request already exists between these users." });
+}
+
 
     // Create direct accepted request
     const newRequest = await Request.create({
@@ -83,5 +91,21 @@ exports.assignMentor = async (req, res) => {
     res.status(201).json({ message: "Mentor assigned manually.", newRequest });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+  console.log(await Request.findAll({ where: { menteeId, mentorId } }));
+
+};
+
+
+// Delete a user
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    await user.destroy();
+    res.json({ message: "User deleted successfully." });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

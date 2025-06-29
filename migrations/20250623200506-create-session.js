@@ -33,6 +33,10 @@ module.exports = {
       mentorFeedback: {
         type: Sequelize.STRING
       },
+      requestId: {
+    type: Sequelize.INTEGER,
+    allowNull: true // safer for now
+  },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
