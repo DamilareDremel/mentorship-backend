@@ -8,6 +8,7 @@ const {
   getAllSessions,
   assignMentor
 } = require("../controllers/adminController");
+const { deleteUser } = require("../controllers/adminController");
 
 // View all users
 router.get("/users", verifyToken, verifyAdmin, getAllUsers);
@@ -23,5 +24,8 @@ router.get("/sessions", verifyToken, verifyAdmin, getAllSessions);
 
 // Manually assign a mentor to a mentee
 router.post("/assign-match", verifyToken, verifyAdmin, assignMentor);
+
+// Delete a user
+router.delete("/users/:id", verifyToken, verifyAdmin, deleteUser);
 
 module.exports = router;
