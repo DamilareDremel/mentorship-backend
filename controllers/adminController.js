@@ -109,3 +109,33 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Delete a mentorship request
+exports.deleteRequest = async (req, res) => {
+  try {
+    const request = await Request.findByPk(req.params.id);
+    if (!request) {
+      return res.status(404).json({ message: "Request not found." });
+    }
+
+    await request.destroy();
+    res.json({ message: "Request deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete a session
+exports.deleteSession = async (req, res) => {
+  try {
+    const session = await Session.findByPk(req.params.id);
+    if (!session) {
+      return res.status(404).json({ message: "Session not found." });
+    }
+
+    await session.destroy();
+    res.json({ message: "Session deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

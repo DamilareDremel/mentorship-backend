@@ -9,6 +9,7 @@ const {
   assignMentor
 } = require("../controllers/adminController");
 const { deleteUser } = require("../controllers/adminController");
+const adminController = require("../controllers/adminController");
 
 // View all users
 router.get("/users", verifyToken, verifyAdmin, getAllUsers);
@@ -27,5 +28,11 @@ router.post("/assign-match", verifyToken, verifyAdmin, assignMentor);
 
 // Delete a user
 router.delete("/users/:id", verifyToken, verifyAdmin, deleteUser);
+
+// Delete a mentorship request
+router.delete("/requests/:id", verifyToken, verifyAdmin, adminController.deleteRequest);
+
+// Delete a session
+router.delete("/sessions/:id", verifyToken, verifyAdmin, adminController.deleteSession);
 
 module.exports = router;
