@@ -30,7 +30,12 @@ exports.bookSession = async (req, res) => {
 // Get mentee sessions
 exports.getMenteeSessions = async (req, res) => {
   try {
-    const sessions = await Session.findAll({ where: { menteeId: req.user.id } });
+    const sessions = await Session.findAll({ where: { menteeId: req.user.id },
+    include: [
+    { model: User, as: 'mentee', attributes: ['id', 'name'] },
+    { model: User, as: 'mentor', attributes: ['id', 'name'] }
+  ]
+ });
     res.status(200).json(sessions);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,7 +45,12 @@ exports.getMenteeSessions = async (req, res) => {
 // Get mentor sessions
 exports.getMentorSessions = async (req, res) => {
   try {
-    const sessions = await Session.findAll({ where: { mentorId: req.user.id } });
+    const sessions = await Session.findAll({ where: { mentorId: req.user.id },
+    include: [
+    { model: User, as: 'mentee', attributes: ['id', 'name'] },
+    { model: User, as: 'mentor', attributes: ['id', 'name'] }
+  ]
+ });
     res.status(200).json(sessions);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -60,11 +70,12 @@ exports.submitFeedback = async (req, res) => {
       session.menteeFeedback = menteeFeedback;
       session.menteeRating = menteeRating;
     }
+
     if (mentorFeedback) {
       session.mentorFeedback = mentorFeedback;
     }
 
-    if (session.menteeFeedback && session.mentorFeedback) {
+    if (session.menteeFeedback && session.menteeRating) {
       session.status = "COMPLETED";
       await session.save();
 
@@ -73,6 +84,7 @@ exports.submitFeedback = async (req, res) => {
         request.status = "COMPLETED";
         await request.save();
       }
+
       return res.status(200).json({ message: "Session and request marked as completed.", session });
     }
 
@@ -83,6 +95,7 @@ exports.submitFeedback = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Get single session
 exports.getSessionById = async (req, res) => {

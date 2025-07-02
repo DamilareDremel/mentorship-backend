@@ -3,7 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Session extends Model {
     static associate(models) {
-      // define association here if needed
+      Session.belongsTo(models.User, { as: 'mentee', foreignKey: 'menteeId' });
+      Session.belongsTo(models.User, { as: 'mentor', foreignKey: 'mentorId' });
+      Session.belongsTo(models.Request, { as: 'request', foreignKey: 'requestId' });
     }
   }
 

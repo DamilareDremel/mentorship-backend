@@ -28,7 +28,11 @@ exports.sendRequest = async (req, res) => {
 exports.getSentRequests = async (req, res) => {
   try {
     const requests = await Request.findAll({
-      where: { menteeId: req.user.id }
+      where: { menteeId: req.user.id },
+      include: [
+    { model: User, as: 'mentee', attributes: ['id', 'name'] },
+    { model: User, as: 'mentor', attributes: ['id', 'name'] }
+  ]
     });
     res.status(200).json(requests);
   } catch (error) {
@@ -40,7 +44,11 @@ exports.getSentRequests = async (req, res) => {
 exports.getReceivedRequests = async (req, res) => {
   try {
     const requests = await Request.findAll({
-      where: { mentorId: req.user.id }
+      where: { mentorId: req.user.id },
+      include: [
+    { model: User, as: 'mentee', attributes: ['id', 'name'] },
+    { model: User, as: 'mentor', attributes: ['id', 'name'] }
+  ]
     });
     res.status(200).json(requests);
   } catch (error) {

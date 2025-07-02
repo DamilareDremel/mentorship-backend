@@ -32,7 +32,12 @@ exports.updateUserRole = async (req, res) => {
 // View all mentorship requests
 exports.getAllRequests = async (req, res) => {
   try {
-    const requests = await Request.findAll();
+    const requests = await Request.findAll({
+      include: [
+        { model: User, as: 'mentee', attributes: ['id', 'name'] },
+        { model: User, as: 'mentor', attributes: ['id', 'name'] }
+      ]
+    });
     res.status(200).json(requests);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -42,7 +47,13 @@ exports.getAllRequests = async (req, res) => {
 // View all sessions
 exports.getAllSessions = async (req, res) => {
   try {
-    const sessions = await Session.findAll();
+    const sessions = await Session.findAll({
+      include: [
+        { model: User, as: 'mentee', attributes: ['id', 'name'] },
+        { model: User, as: 'mentor', attributes: ['id', 'name'] }
+      ]
+    });
+
     res.status(200).json(sessions);
   } catch (error) {
     res.status(500).json({ message: error.message });
