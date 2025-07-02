@@ -50,7 +50,8 @@ exports.getAllSessions = async (req, res) => {
     const sessions = await Session.findAll({
       include: [
         { model: User, as: 'mentee', attributes: ['id', 'name'] },
-        { model: User, as: 'mentor', attributes: ['id', 'name'] }
+        { model: User, as: 'mentor', attributes: ['id', 'name'] },
+        { model: Request, as: 'request' }
       ]
     });
 
