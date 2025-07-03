@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken, verifyAdmin, } = require("../middleware/authMiddleware");
+const { verifyToken, verifyAdmin, authenticate, authorizeAdmin } = require("../middleware/authMiddleware");
 const {
   getAllUsers,
   updateUserRole,
   getAllRequests,
   getAllSessions,
-  assignMentor
+  assignMentor,
+  deleteUser,
+  deleteRequest,
+  deleteSession,
+  addUser,
+  editUser
 } = require("../controllers/adminController");
-const { deleteUser } = require("../controllers/adminController");
-const adminController = require("../controllers/adminController");
 
 // View all users
 router.get("/users", verifyToken, verifyAdmin, getAllUsers);
@@ -30,9 +33,15 @@ router.post("/assign-match", verifyToken, verifyAdmin, assignMentor);
 router.delete("/users/:id", verifyToken, verifyAdmin, deleteUser);
 
 // Delete a mentorship request
-router.delete("/requests/:id", verifyToken, verifyAdmin, adminController.deleteRequest);
+router.delete("/requests/:id", verifyToken, verifyAdmin, deleteRequest);
 
 // Delete a session
-router.delete("/sessions/:id", verifyToken, verifyAdmin, adminController.deleteSession);
+router.delete("/sessions/:id", verifyToken, verifyAdmin, deleteSession);
+
+// Add new user
+router.post("/users", verifyToken, verifyAdmin, addUser);
+
+// Edit user
+router.put("/users/:id", verifyToken, verifyAdmin, editUser);
 
 module.exports = router;
